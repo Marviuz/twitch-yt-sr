@@ -1,6 +1,6 @@
 <script lang="ts">
-	import YoutubePlayer from '@/components/YoutubePlayer.svelte';
-	import { Commands } from '@/lib/commands';
+	import YoutubePlayer from '$lib/components/YoutubePlayer.svelte';
+	import { Commands } from '$lib/commands';
 	import ComfyJS from 'comfy.js';
 	import { nanoid } from 'nanoid';
 	import { trpc } from '$lib/trpc/client';
@@ -43,7 +43,7 @@
 
 {#if firstVid}
 	{#key firstVid.id}
-		<div class="aspect-video w-full h-auto">
+		<div class="w-full h-auto aspect-video">
 			<YoutubePlayer videoId={firstVid.src} onVideoEnd={() => removeLastPlayed()} />
 		</div>
 	{/key}
