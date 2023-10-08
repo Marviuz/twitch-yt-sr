@@ -45,3 +45,8 @@
 		@apply bg-background text-foreground;
 	}
 }
+
+._toastContainer > li > ._toastItem {
+	background: hsl(var(--background));
+	@apply border border-border rounded-md border-solid;
+}
