@@ -5,6 +5,8 @@
 	import type { EventHandler } from 'svelte/elements';
 	import { page } from '$app/stores';
 	import Icon from '@iconify/svelte';
+	import { toast } from '@zerodevx/svelte-toast';
+	import * as Tooltip from '$lib/components/ui/tooltip';
 
 	let generatedLink = '';
 
@@ -16,6 +18,11 @@
 		const searchParams = new URLSearchParams(form.data);
 
 		generatedLink = `${$page.url.origin}/overlay?${searchParams.toString()}`;
+	};
+
+	const handleCopyGeneratedLink = async () => {
+		await navigator.clipboard.writeText(generatedLink);
+		toast.push('Copied!');
 	};
 </script>
 
@@ -48,9 +55,21 @@
 					<code class="block truncate">
 						{generatedLink}
 					</code>
-					<Button variant="outline" class="p-1 aspect-square">
-						<Icon icon="bxs:copy" />
-					</Button>
+					<Tooltip.Root>
+						<Tooltip.Trigger asChild let:builder>
+							<Button
+								builders={[builder]}
+								variant="outline"
+								class="p-1 aspect-square"
+								on:click={handleCopyGeneratedLink}
+							>
+								<Icon icon="bxs:copy" />
+							</Button>
+						</Tooltip.Trigger>
+						<Tooltip.Content>
+							<p>Copy generated link</p>
+						</Tooltip.Content>
+					</Tooltip.Root>
 				</div>
 			{/if}
 		</div>

@@ -38,6 +38,7 @@
 		"@iconify/svelte": "^3.1.4",
 		"@trpc/client": "^10.40.0",
 		"@trpc/server": "^10.40.0",
+		"@zerodevx/svelte-toast": "^0.9.5",
 		"bits-ui": "^0.5.7",
 		"clsx": "^2.0.0",
 		"comfy.js": "^1.1.16",
