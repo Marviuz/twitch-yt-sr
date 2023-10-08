@@ -23,12 +23,14 @@
 	$: firstVid = videos.at(0);
 
 	ComfyJS.onCommand = async (_user, command, query) => {
-		if (!query) return;
-
 		switch (command) {
 			case Commands.SR:
+				if (!query) break;
 				const videoId = await trpc($page).searchVideo.query({ query });
 				videos = [...videos, { id: nanoid(), src: videoId }];
+				break;
+			case Commands.SKIP:
+				removeLastPlayed();
 				break;
 		}
 	};
