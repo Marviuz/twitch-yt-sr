@@ -1,4 +1,5 @@
-import { search, yt_validate, video_basic_info } from 'play-dl';
+import ytdl from 'ytdl-core';
+import ytsr from 'ytsr';
 import { z } from 'zod';
 
 const searchVideoSchema = z.object({
@@ -6,20 +7,16 @@ const searchVideoSchema = z.object({
 });
 
 async function searchVideo(input: string): Promise<string> {
-	if (input.startsWith('http') && yt_validate(input)) {
-		const videoId = (await video_basic_info(input)).video_details.id;
-		if (!videoId) throw new Error('No Video found');
+	if (ytdl.validateID(input)) return input;
+	if (ytdl.validateURL(input)) return ytdl.getURLVideoID(input);
+
+	const searchResults = await ytsr(input);
+	const firstVideo = searchResults.items.at(0);
+	if (firstVideo?.type === 'video') {
+		return firstVideo.id;
 	}
 
-	const [ytVideo] = await search(input, {
-		source: {
-			youtube: 'video'
-		}
-	});
-
-	if (!ytVideo?.id) throw new Error('No Video found');
-
-	return ytVideo.id;
+	throw new Error('Video not found!');
 }
 
 export { searchVideo, searchVideoSchema };
